@@ -18,8 +18,8 @@ app.use(express_1.default.json());
 // Routes
 app.use('/api/characters', character_routes_1.default);
 app.use('/api/inventory', inventory_routes_1.default);
-app.use("/api/enemies", enemy_routes_1.default);
-app.use("/api/combat", combat_routes_1.default);
+app.use('/api/enemies', enemy_routes_1.default);
+app.use('/api/combat', combat_routes_1.default);
 // Health check route
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok' });

@@ -1,56 +1,112 @@
 import { Request, Response } from "express";
-import { Enemy } from "../models/enemy.model"; // Adjust path if needed
-import { IEnemy } from "../models/enemy.model";
+import { Enemy, IEnemy } from "../models/enemy.model";
 
-export const getEnemies = async (_req: Request, res: Response) => {
-  try {
-    const enemies: IEnemy[] = await Enemy.find();
-    res.json(enemies);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch enemies." });
+export class EnemyController {
+  // Get all enemies
+  async getEnemies(_req: Request, res: Response): Promise<void> {
+    try {
+      const enemies: IEnemy[] = await Enemy.find();
+      res.status(200).json(enemies);
+    } catch (error) {
+      console.error("Error fetching enemies:", error);
+      res.status(500).json({ message: "Failed to fetch enemies" });
+    }
   }
-};
 
-export const getEnemyById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-
-  try {
-    const enemy = await Enemy.findById(id);
-    if (!enemy) return res.status(404).json({ error: "Enemy not found." });
-    res.json(enemy);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch enemy." });
+  // Get active enemies (with health > 0)
+  async getActiveEnemies(_req: Request, res: Response): Promise<void> {
+    try {
+      console.log("Processing request for active enemies");
+      const activeEnemies: IEnemy[] = await Enemy.find({ "stats.health": { $gt: 0 } })
+        .limit(5)
+        .select("_id name stats.health stats.attack stats.defense");
+      
+      console.log(`Found ${activeEnemies.length} active enemies`);
+      
+      res.status(200).json(activeEnemies);
+    } catch (error) {
+      console.error("Error fetching active enemies:", error);
+      res.status(500).json({ message: "Failed to fetch active enemies" });
+    }
   }
-};
 
-export const createEnemy = async (req: Request, res: Response) => {
-  const { type, name, level, stats } = req.body;
+  // Get enemy by ID
+  async getEnemyById(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
 
-  try {
-    const newEnemy = new Enemy({
-      type,
-      name,
-      level,
-      stats
-    });
+      if (!id) {
+        res.status(400).json({ message: "Enemy ID is required" });
+        return;
+      }
 
-    const savedEnemy = await newEnemy.save();
-    res.status(201).json(savedEnemy);
-  } catch (error) {
-    res.status(400).json({ error: "Failed to create enemy." });
+      const enemy = await Enemy.findById(id);
+
+      if (!enemy) {
+        res.status(404).json({ message: "Enemy not found" });
+        return;
+      }
+
+      res.status(200).json(enemy);
+    } catch (error) {
+      console.error("Error fetching enemy:", error);
+      res.status(500).json({ message: "Failed to fetch enemy" });
+    }
   }
-};
 
-export const deleteEnemy = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  // Create new enemy
+  async createEnemy(req: Request, res: Response): Promise<void> {
+    try {
+      const { type, name, level, stats } = req.body;
 
-  try {
-    const deleted = await Enemy.findByIdAndDelete(id);
-    if (!deleted) return res.status(404).json({ error: "Enemy not found." });
+      if (!type || !name || !level || !stats) {
+        res.status(400).json({ message: "Missing required fields" });
+        return;
+      }
 
-    res.status(200).json({ message: "Enemy deleted successfully." });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete enemy." });
+      const newEnemy = new Enemy({
+        type,
+        name,
+        level,
+        stats
+      });
+
+      const savedEnemy = await newEnemy.save();
+
+      res.status(201).json({
+        message: "Enemy created successfully",
+        enemy: savedEnemy
+      });
+    } catch (error) {
+      console.error("Error creating enemy:", error);
+      res.status(500).json({ message: "Failed to create enemy" });
+    }
   }
-};
 
+  // Delete enemy
+  async deleteEnemy(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+
+      if (!id) {
+        res.status(400).json({ message: "Enemy ID is required" });
+        return;
+      }
+
+      const deletedEnemy = await Enemy.findByIdAndDelete(id);
+
+      if (!deletedEnemy) {
+        res.status(404).json({ message: "Enemy not found" });
+        return;
+      }
+
+      res.status(200).json({
+        message: "Enemy deleted successfully",
+        enemy: deletedEnemy
+      });
+    } catch (error) {
+      console.error("Error deleting enemy:", error);
+      res.status(500).json({ message: "Failed to delete enemy" });
+    }
+  }
+}

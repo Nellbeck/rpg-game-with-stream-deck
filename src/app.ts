@@ -16,8 +16,8 @@ app.use(express.json());
 // Routes
 app.use('/api/characters', characterRoutes);
 app.use('/api/inventory', inventoryRoutes);
-app.use("/api/enemies", enemyRoutes);
-app.use("/api/combat", combatRoutes);
+app.use('/api/enemies', enemyRoutes);
+app.use('/api/combat', combatRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
@@ -26,7 +26,7 @@ app.get('/health', (req, res) => {
 
 // Start the server
 const startServer = async () => {
-  try {
+  try { 
     await connectDatabase();
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);

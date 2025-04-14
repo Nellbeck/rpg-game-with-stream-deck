@@ -6,6 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const enemy_controller_1 = require("../controllers/enemy.controller");
 const router = express_1.default.Router();
-router.get("/", enemy_controller_1.getEnemies);
-router.post("/", enemy_controller_1.createEnemy); // optionally secure this if needed
+const enemyController = new enemy_controller_1.EnemyController();
+router.get("/", enemyController.getEnemies.bind(enemyController));
+router.get("/active", enemyController.getActiveEnemies.bind(enemyController));
+router.get("/:id", enemyController.getEnemyById.bind(enemyController));
+router.post("/", enemyController.createEnemy.bind(enemyController));
+router.delete("/:id", enemyController.deleteEnemy.bind(enemyController));
 exports.default = router;

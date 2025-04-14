@@ -273,6 +273,11 @@ export function simulateCombat(character: ICharacter, enemy: IEnemy): BattleResu
   } else {
     log.push(`\n${character.name} was defeated by ${enemy.name}...`);
   }
+
+console.log("=== FULL COMBAT LOG ===");
+log.forEach(line => console.log(line));
+console.log("=== END OF LOG ===");
+
   
   return {
     log,

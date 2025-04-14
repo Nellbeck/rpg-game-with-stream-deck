@@ -27,12 +27,8 @@ export class CombatController {
         await character.save();
         
         // Remove or mark the enemy as defeated
-        if (enemy.type !== 'dragon') {  // Don't delete dragon enemies
-          await Enemy.findByIdAndDelete(enemyId);
-        } else {
-          enemy.stats.health = 0; // Mark as defeated
-          await enemy.save();
-        }
+        enemy.stats.health = 0;
+        await enemy.save();
       } else {
         // Character lost
         // You could implement some penalty here if desired
@@ -50,7 +46,6 @@ export class CombatController {
     }
   }
   
-  // New method for handling character healing
   async heal(req: Request, res: Response): Promise<void> {
     const { characterId, amount } = req.body;
     

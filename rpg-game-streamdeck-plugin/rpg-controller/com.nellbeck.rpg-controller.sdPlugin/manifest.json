@@ -24,7 +24,7 @@
 			"Name": "Create Character",
 			"States": [
 			  {
-				"Title": "Create Character",
+				"Title": "Create\nWarrior",
 				"FontSize": "12"
 			  }
 			]
@@ -34,7 +34,7 @@
 			"Name": "Spawn Enemy",
 			"States": [
 			  {
-				"Title": "Spawn Enemy",
+				"Title": "Spawn\nGoblin",
 				"FontSize": "12"
 			  }
 			]

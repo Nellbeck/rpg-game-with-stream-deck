@@ -7,7 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "api": "npm run build && npm run start",
+    "streamdeck": "node streamdeck-bridge.js",
+    "plugin-watch": "cd rpg-game-streamdeck-plugin/rpg-controller && npm run watch",
+    "all": "concurrently \"npm run api\" \"npm run streamdeck\" \"npm run plugin-watch\""
   },
   "keywords": [],
   "author": "",
@@ -37,6 +41,7 @@
     "@types/mssql": "^9.1.7",
     "@types/node": "^22.14.1",
     "@types/ws": "^8.18.1",
+    "concurrently": "^9.1.2",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"

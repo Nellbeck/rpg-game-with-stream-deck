@@ -71,7 +71,7 @@ app.get('/spawn/:type', async (req, res) => {
     
     console.log('Sending to API:', enemyData);
     
-    const response = await fetch(`${GAME_API_URL}/enemies`, {
+    const response = await fetch(`${GAME_API_URL}/enemies/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -163,8 +163,6 @@ app.post('/battle', async (req, res) => {
       return res.status(400).json({ error: 'Missing characterId or enemyId' });
     }
     
-    console.log(`Starting battle between character ${characterId} and enemy ${enemyId}`);
-    
     const response = await fetch(`${GAME_API_URL}/combat/battle`, {
       method: 'POST',
       headers: {
@@ -232,6 +230,34 @@ app.post('/heal', async (req, res) => {
   } catch (error) {
     console.error('Error forwarding heal request:', error);
     res.status(500).json({ error: 'Failed to process healing' });
+  }
+});
+
+app.get('/enemies/active', async (req, res) => {
+  console.log(`Bridge received request to get active enemies`);
+ 
+  try {
+    // Change this line:
+    const response = await fetch(`${GAME_API_URL}/enemies/active`, {
+      method: 'GET'
+    });
+    
+    // Pass through the response
+    const responseText = await response.text();
+    console.log('Active enemies response:', responseText.substring(0, 100));
+    
+    try {
+      // Try to parse as JSON
+      const responseData = JSON.parse(responseText);
+      res.status(response.status).json(responseData);
+    } catch (e) {
+      // If not valid JSON, send as is
+      console.error('Failed to parse response as JSON:', e);
+      res.status(response.status).send(responseText);
+    }
+  } catch (error) {
+    console.error('Error getting active enemies:', error);
+    res.status(500).json({ error: 'Failed to retrieve active enemies' });
   }
 });
 

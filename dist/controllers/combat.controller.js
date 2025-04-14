@@ -22,13 +22,8 @@ class CombatController {
                 // Save the character with updated stats
                 await character.save();
                 // Remove or mark the enemy as defeated
-                if (enemy.type !== 'dragon') { // Don't delete dragon enemies
-                    await enemy_model_1.Enemy.findByIdAndDelete(enemyId);
-                }
-                else {
-                    enemy.stats.health = 0; // Mark as defeated
-                    await enemy.save();
-                }
+                enemy.stats.health = 0;
+                await enemy.save();
             }
             else {
                 // Character lost
@@ -45,7 +40,6 @@ class CombatController {
             res.status(500).json({ error: "Combat simulation failed." });
         }
     }
-    // New method for handling character healing
     async heal(req, res) {
         const { characterId, amount } = req.body;
         try {
