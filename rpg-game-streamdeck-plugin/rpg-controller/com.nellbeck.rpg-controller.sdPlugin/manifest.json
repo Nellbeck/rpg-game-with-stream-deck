@@ -1,0 +1,87 @@
+{
+	"Name": "rpg-controller",
+	"Version": "0.1.0.0",
+	"Author": "nellbeck",
+	"Actions": [
+		{
+			"Name": "Counter",
+			"UUID": "com.nellbeck.rpg-controller.increment",
+			"Icon": "imgs/actions/counter/icon",
+			"Tooltip": "Displays a count, which increments by one on press.",
+			"PropertyInspectorPath": "ui/increment-counter.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/counter/key",
+					"TitleAlignment": "middle"
+				}
+			]
+		},
+		{
+			"UUID": "com.nellbeck.rpggame.createcharacter",
+			"Name": "Create Character",
+			"States": [
+			  {
+				"Title": "Create Character",
+				"FontSize": "12"
+			  }
+			]
+		  },
+		  {
+			"UUID": "com.nellbeck.rpggame.spawnenemy",
+			"Name": "Spawn Enemy",
+			"States": [
+			  {
+				"Title": "Spawn Enemy",
+				"FontSize": "12"
+			  }
+			]
+		  },
+		  {
+			"UUID": "com.nellbeck.rpggame.combataction",
+			"Name": "Combat Action",
+			"States": [
+			  {
+				"Title": "Attack",
+				"FontSize": "12"
+			  }
+			]
+		  },
+		  {
+			"UUID": "com.nellbeck.rpggame.healaction",
+			"Name": "Heal Character",
+			"States": [
+			  {
+				"Title": "Heal",
+				"FontSize": "12"
+			  }
+			]
+		  }
+	],
+	"Category": "rpg-controller",
+	"CategoryIcon": "imgs/plugin/category-icon",
+	"CodePath": "bin/plugin.js",
+	"Description": "A controller for rpg game",
+	"Icon": "imgs/plugin/marketplace",
+	"SDKVersion": 2,
+	"Software": {
+		"MinimumVersion": "6.4"
+	},
+	"OS": [
+		{
+			"Platform": "mac",
+			"MinimumVersion": "12"
+		},
+		{
+			"Platform": "windows",
+			"MinimumVersion": "10"
+		}
+	],
+	"Nodejs": {
+		"Version": "20",
+		"Debug": "enabled"
+	},
+	"UUID": "com.nellbeck.rpg-controller"
+}
